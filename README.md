@@ -18,3 +18,9 @@ HYPERSTATE CHALLENGE
 4. Fetched Images and Videos from the disk.
 ```
 
+## Approach
+
+1. Used Multer libraray to upload single and multiple images and videos.
+2. Multer library has various options. It help us to add file extention filters, Storage where it should be saved, and how many files we can add in a single go.
+3. Used Jquery/Ajax to do api calls from frontend.
+
