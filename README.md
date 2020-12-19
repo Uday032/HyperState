@@ -1,7 +1,7 @@
 # Hyperstate-Challenge
 HYPERSTATE CHALLENGE
 
-## To start the project:
+## Build Instructions:
 ```
 1. Go to hyperstate Directory.
 2. Type npm install
