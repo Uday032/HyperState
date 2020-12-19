@@ -1,4 +1,4 @@
-# Atlan-Challenge
+# HyperState-Challenge
 HYPERSTATE CHALLENGE
 
 ```
