@@ -1,4 +1,4 @@
-# HYPERSTATE-Challenge
+# Hyperstate-Challenge
 HYPERSTATE CHALLENGE
 
 ## To start the project:
