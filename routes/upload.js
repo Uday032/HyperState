@@ -13,7 +13,7 @@ module.exports = function (app) {
         // 10 is the limit I've defined for number of uploaded files at once
         // 'multiple_images' is the name of our file input field
         let upload = multer({
-            storage: storage.storage,
+            storage: storage.imagestorage,
             fileFilter: helpers.imageFilter
         }).array('multiple_images', 10);
 
@@ -21,16 +21,40 @@ module.exports = function (app) {
             if (req.fileValidationError) {
                 return res.send(req.fileValidationError);
             } 
+            // let result = "You have uploaded these images: <hr />";
+            // const files = req.files;
+            // let index, len;
 
-            let result = "You have uploaded these images: <hr />";
-            const files = req.files;
-            let index, len;
+            // // Loop through all the uploaded images and display them on frontend
+            // for (index = 0, len = files.length; index < len; ++index) {
+            //     result += `<img src="${files[index].path}" width="300" style="margin-right: 20px;">`;
+            // }
+            // result += '<hr/><a href="./">Upload more images</a>';
+            res.send("uploaded");
+        });
+    });
 
-            // Loop through all the uploaded images and display them on frontend
-            for (index = 0, len = files.length; index < len; ++index) {
-                result += `<img src="${files[index].path}" width="300" style="margin-right: 20px;">`;
+
+    app.post('/upload-videos', (req, res) => {
+        // 10 is the limit I've defined for number of uploaded files at once
+        // 'multiple_images' is the name of our file input field
+        let upload = multer({
+            storage: storage.videostorage,
+        }).array('multiple_videos', 10);
+
+        upload(req, res, function (err) {
+            if (req.fileValidationError) {
+                return res.send(req.fileValidationError);
             }
-            result += '<hr/><a href="./">Upload more images</a>';
+            // let result = "You have uploaded these images: <hr />";
+            // const files = req.files;
+            // let index, len;
+
+            // // Loop through all the uploaded images and display them on frontend
+            // for (index = 0, len = files.length; index < len; ++index) {
+            //     result += `<img src="${files[index].path}" width="300" style="margin-right: 20px;">`;
+            // }
+            // result += '<hr/><a href="./">Upload more images</a>';
             res.send("uploaded");
         });
     });

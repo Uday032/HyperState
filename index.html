@@ -47,12 +47,9 @@
                                             Submit</button>
                                     </div>
                                     <div class="mt-6">
-                                        
-                                        <!-- <div class="row"> -->
                                         <div>
                                             <div class="preview-images"></div>
                                         </div>
-                                        <!-- </div> -->
                                     </div>
                                 </div>
                             </form>
@@ -60,10 +57,49 @@
                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                             aria-labelledby="v-pills-profile-tab">
                             <h2>Upload Video</h2>
+                            <form method="POST" action="/upload-videos" enctype="multipart/form-data"></form>
+                                <div class="mt-4">
+                                    <input type="file" multiple id="input-multi-videos" name="multiple_videos" class="
+                                                form-control-file">
+                                </div>
+                                <div class="mt-4 mb-4">
+                                    <h4 class="video-uploading-status"></h4>
+                                </div>
+
+                                <div class="mt-2">
+                                    <button type="submit" id="upload-video-submit-button" class="btn btn-primary">
+                                        Submit</button>
+                                </div>
+                            </form>
                         </div>
                         <div class="tab-pane fade" id="v-pills-get" role="tabpanel"
                             aria-labelledby="v-pills-profile-tab">
                             <h2>Get and Delete Photos and Videos</h2>
+
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link image-pill" id="pills-image-tab" data-toggle="pill" href="#pills-home"
+                                        role="tab" aria-controls="pills-image" aria-selected="true">Get Image</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-video-tab" data-toggle="pill" href="#pills-video"
+                                        role="tab" aria-controls="pills-video" aria-selected="false">Get Videos</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact"
+                                        role="tab" aria-controls="pills-contact" aria-selected="false">Contact</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-image" role="tabpanel"
+                                    aria-labelledby="pills-image-tab"></div>
+                                <div class="tab-pane fade" id="pills-video" role="tabpanel"
+                                    aria-labelledby="pills-video-tab"></div>
+                                <div class="tab-pane fade" id="pills-contact" role="tabpanel"
+                                    aria-labelledby="pills-contact-tab">...</div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -110,7 +146,7 @@
              });
          });
 
-         $("#upload-images-submit-button").click(function(e) {
+        $("#upload-images-submit-button").click(function(e) {
             e.preventDefault();
             var this_ = $(this)
             $("#upload-images-submit-button").addClass("disabled")
@@ -145,7 +181,87 @@
                 }
             })
             
-         });
+        });
+
+        $("#upload-video-submit-button").click(function(e){
+            e.preventDefault();
+            var this_ = $(this);
+            $("#upload-video-submit-button").addClass("disabled")
+            $(".video-uploading-status").text("uploading");
+           
+            var video_form_data = new FormData();
+
+            var totalvideofiles = document.getElementById('input-multi-videos').files.length;
+
+            for (var index = 0; index < totalvideofiles; index++) { 
+                video_form_data.append("multiple_videos", document.getElementById('input-multi-videos').files[index]);
+                //
+                // console.log(document.getElementById('input-multi-files').files[index]); 
+            }
+
+            $.ajax({
+                url: "/upload-videos",
+                method: "POST",
+                data: video_form_data,
+                processData: false,
+                contentType: false,
+                success: function(data){
+                    $(".video-uploading-status").text("Uploaded");
+                    console.log(data);
+                    console.log("inside success");
+                    $("#upload-video-submit-button").removeClass("disabled")
+                }, 
+                error: function(xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            })
+        });
+
+        //show uploaded images
+        $(".image-pill").click(function(e){
+            e.preventDefault();
+            $.ajax({
+                url: '/displayimages',
+                method: "GET",
+                success: function(data){
+                    console.log(data);
+                    console.log("inserted", data.length, data[0]);
+                    var imagedata = ""
+                    for(var i=0; i<data.length;i++){
+                        imagedata = imagedata+ '<img src=./images/'+data[i]+' width="300" style="margin: 15px">'
+                    }
+                    $("#pills-image").html(imagedata);
+                    console.log("Inserted");
+                    // console.log("inserted", imagedata.length);
+                },
+                error: function(xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+        });
+
+        //show uploaded videos
+        $("#pills-video-tab").click(function(e){
+            e.preventDefault();
+            $.ajax({
+                url: '/displayvideos',
+                method: "GET",
+                success: function(data){
+                    console.log(data);
+                    console.log("inserted", data.length, data[0]);
+                    var videodata = ""
+                    for(var i=0; i<data.length;i++){
+                        videodata = videodata+ '<video width="320" height="240"  style="margin: 10px" controls> <source src=/videos/'+data[i]
+                                            + '></video>'
+                    }
+                    $("#pills-video").html(videodata);
+                    // console.log("inserted", videodata.length);
+                },
+                error: function(xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            })
+        })
      </script>
 </body>
 
