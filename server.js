@@ -1,8 +1,10 @@
 const express = require("express")
 const app = express()
 
+app.use(express.static(__dirname + '/uploads'));
 //routes
 require('./routes/upload')(app);
+require('./routes/display')(app);
 
 // Take any port number of your choice which 
 // is not taken by any other process 
